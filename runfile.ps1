@@ -1,8 +1,3 @@
-# https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_parameters?view=powershell-7.2
-Param(
-    [string]
-    $file = ""
-)
 $output = "$PSScriptRoot/output"
 $libs = , "$PSScriptRoot/lib/algs4.jar"
 
@@ -11,12 +6,11 @@ $libs = $libs -join ":"
 # write-host $libs
 
 # 创建输出目录
-if (Test-Path $output) {
-
-}
+if (Test-Path $output) {}
 else {
     New-Item -Path $output -ItemType Directory
 }
+
 $class = $args[0].ToString()
 
 # 移除多余前后缀
@@ -33,15 +27,14 @@ if ($class.Substring($class.Length - 5, 5) -eq ".java") {
 # 编译
 javac -d $output -cp "$libs" $args[0]
 
-# 输入文件
-if ($file -eq "") {
-    $content = ""
+if ($args.Length -eq 1) {
+    Push-Location $output
+    & java -cp "$output;$libs" $class
+    Pop-Location
 }
 else {
-    $content = Get-Content $file
-
+    $content = Get-Content $args[1]
+    Push-Location $output
+    Write-Output $content | & java -cp "$output;$libs" $class $args[1..-1]
+    Pop-Location
 }
-# 运行
-Push-Location $output
-Write-Output $content | & java -cp "$output;$libs" $class $args[1..-1]
-Pop-Location
