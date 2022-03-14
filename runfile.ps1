@@ -29,12 +29,19 @@ javac -d $output -cp "$libs" $args[0]
 
 if ($args.Length -eq 1) {
     Push-Location $output
-    & java -cp "$output;$libs" $class
+    & java -cp "$output;$libs" $class $args[2..-1]
     Pop-Location
 }
 else {
-    $content = Get-Content $args[1]
-    Push-Location $output
-    Write-Output $content | & java -cp "$output;$libs" $class $args[1..-1]
-    Pop-Location
+    if (Test-Path($args[1])) {
+        $content = Get-Content $args[1]
+        Push-Location $output
+        Write-Output $content | & java -cp "$output;$libs" $class $args[2..-1]
+        Pop-Location
+    }
+    else {
+        Push-Location $output
+        & java -cp "$output;$libs" $class $args[2..-1]
+        Pop-Location
+    }
 }
