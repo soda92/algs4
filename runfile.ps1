@@ -10,6 +10,15 @@
 # .\runfile.ps1 RandomWord.java                  <- interactive run (read from stdin)
 # .\runfile.ps1 RandomWord.java .\animals8.txt   <- use animals8.txt as input
 
+# in subdirectory (week1):
+# PS D:\src\algs4\week1> ..\runfile.ps1 .\HelloGoodbye.java aa bb
+# Hello bb and aa.
+# Goodbye aa and bb.
+# PS D:\src\algs4\week1> ..\runfile.ps1 .\HelloWorld.java
+# Hello, World
+# PS D:\src\algs4\week1> ..\runfile.ps1 .\RandomWord.java ..\animals8.txt
+# ant
+
 $output = "$PSScriptRoot/output"
 # if you put the algs4.jar in top level directory (same as this file),
 # remove `lib/` in $libs.
